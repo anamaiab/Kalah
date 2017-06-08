@@ -13,7 +13,7 @@ public class Main {
 		int jogador = 1;
 		Tabuleiro jogo = new Tabuleiro();
 		
-		while(jogo.totalKalah() != 0){
+		while(!jogo.limiteKalah() && jogo.temFeijoes()){
 			System.out.println(jogo);
 			
 			if(jogador == 1){

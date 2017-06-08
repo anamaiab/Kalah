@@ -27,8 +27,11 @@ public class Tabuleiro {
         k2 = new Kalah();
     }
     
-    public int totalKalah(){
-    	return 40 - (k1.nFeijoes + k2.nFeijoes);
+    public boolean limiteKalah(){
+		if (k1.nFeijoes > 20 || k2.nFeijoes > 20) {
+			return true;
+		}
+		return false;
     }
 
     public int jogada (int jogador, Casinha[] cJogador, Kalah kJogador, Casinha[] oponente, int casinha) throws IOException {
@@ -118,4 +121,18 @@ public class Tabuleiro {
     	return r;
     }
 
+	public boolean temFeijoes () {
+		int jogador1, jogador2;
+
+		for (int i = 0; i < 6; i++) {
+			jogador1 += j1[i].nFeijoes;
+			jogador2 += j2[i].nFeijoes;
+		}
+		if (jogador1 == 0 || jogador2 == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 }
+
