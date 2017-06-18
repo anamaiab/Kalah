@@ -122,7 +122,7 @@ public class Tabuleiro {
     }
 
 	public boolean temFeijoes () {
-		int jogador1, jogador2;
+		int jogador1 = 0, jogador2 = 0;
 
 		for (int i = 0; i < 6; i++) {
 			jogador1 += j1[i].nFeijoes;
