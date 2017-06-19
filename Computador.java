@@ -1,7 +1,7 @@
 /**
  * Created by caroles on 13/06/2017.
  */
-public class Computador {
+/*public class Computador {
     Casinha[] j1;
     Casinha[] j2;
     Kalah k1;
@@ -35,3 +35,4 @@ public class Computador {
         }
     }
 }
+*/

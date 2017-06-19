@@ -12,6 +12,7 @@ public class Main {
 		int casinha;
 		int jogador = 1;
 		Tabuleiro jogo = new Tabuleiro();
+		Interface i = new Interface(jogo);
 		
 		while(!jogo.limiteKalah() && jogo.temFeijoes()){
 			System.out.println(jogo);

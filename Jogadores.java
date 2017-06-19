@@ -5,5 +5,7 @@ import java.io.IOException;
  */
 public class Jogadores {
 
-    public Jogadores()
+    public Jogadores() {
+
+    }
 }
