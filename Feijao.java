@@ -5,7 +5,7 @@ public class Feijao {
     int jogador;
     boolean Kalah;
 
-    public Feijao (int jogador) {
+    public Feijao(int jogador) {
         this.jogador = jogador;
         Kalah = false;
     }
