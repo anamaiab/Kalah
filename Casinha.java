@@ -5,7 +5,8 @@
  */
 
 /**
- * Created by caroles on 30/05/2017.
+ * Created by Ana Maia, Beatriz Monteiro, carolesj, Giovana Craveiro on 30/05/2017.
+ * Possui o próprio número de feijões
  */
 public class Casinha {
     public int nFeijoes;

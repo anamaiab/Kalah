@@ -1,7 +1,8 @@
 import javax.swing.*;
 
 /**
- * Created by caroles on 22/06/2017.
+ * Created by Ana Maia, Beatriz Monteiro, carolesj, Giovana Craveiro on 22/06/2017.
+ * Seta os vetores de ícones a serem usados nos botões
  */
 public class Icones {
     public Icon casinhas[] = new Icon[6];

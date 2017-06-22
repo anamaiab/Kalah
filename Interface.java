@@ -3,7 +3,8 @@ import javax.swing.*;
 import java.awt.event.WindowEvent;
 
 /**
- * Created by caroles on 18/06/2017.
+ * Created by Ana Maia, Beatriz Monteiro, carolesj, Giovana Craveiro on 18/06/2017.
+ * Roda a interface do jogo
  */
 public class Interface extends JFrame {
 
@@ -15,6 +16,9 @@ public class Interface extends JFrame {
     int nivel;
     int Comp = 0;
 
+    /**
+     * Atualiza os valores quando mudados
+     * */
     public void atualiza(JButton[] botaoj1, JButton[] botaoj2, JLabel kalah1, JLabel kalah2) {
         for (int i = 0; i < 6; i++) {
             botaoj1[i].setText(Integer.toString(tabuleiro.j1[i].nFeijoes));
@@ -24,19 +28,29 @@ public class Interface extends JFrame {
         kalah2.setText(Integer.toString(k2.nFeijoes));
     }
 
+    /**
+     * Define qual é o nível da IA
+     * */
     public void decidirnivel(int i) {
-        this.nivel = i;
-        this.Comp = 1;
+        if(this.Comp == 1) this.nivel = i; 
     }
 
+    /**
+     * Define se o jogo será de um ou dois jogadores
+     * */
     public void decidirjogadores(int i) {
         this.Comp = i;
     }
 
+    /**
+     * Mostra janela pop up que pergunta se o jogador deseja jogar de novo.
+     * Se sim, reinicia o jogo, se não, sai do jogo.
+     * */
     public void querJogarNovamente(JButton j1[], JButton j2[], JLabel k1, JLabel k2) {
+        //recebe o resultado da janela pop up (0 para sim)
         int resposta = JOptionPane.showConfirmDialog(null, "Você quer jogar novamente?",
                 "Acabou!", JOptionPane.YES_NO_OPTION);
-        // reinicia tudão
+        // reinicia  o jogo se o sim foi clicado
         if (resposta == 0) {
             tabuleiro.reinicia();
             for (int i = 0; i < 6; i++) {
@@ -46,36 +60,44 @@ public class Interface extends JFrame {
             k1.setIcon(icones.kalahs[0]);
             k2.setIcon(icones.kalahs[0]);
             atualiza(j1, j2, k1, k2);
+        //caso contrário, fecha a janela, o que encerra o processo
         } else {
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
     }
 
+    /**
+     * Contém toda a interface. As decisões de tamanho foram feitas por tentativa e erro
+     * */
     public Interface(Tabuleiro tabuleiro, Kalah k1, Kalah k2, Computador IA) throws IOException {
         this.tabuleiro = tabuleiro;
         this.k1 = k1;
         this.k2 = k2;
         this.IA = IA;
         int i;
+        //quando a janela é fechada, o programa se encerra
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        //define o painel, os vetores de botões de cada jogador e os ícones
         JPanel panel = new JPanel(null);
         JButton botaoj1[] = new JButton[6];
         JButton botaoj2[] = new JButton[6];
 
-        Icon feijaodance = new ImageIcon("feijaodancante.gif");
-        Icon vezjogador1 = new ImageIcon("vezjogador1.png");
-        Icon vezjogador2 = new ImageIcon("vezjogador2.png");
+        Icon feijaodance = new ImageIcon("feijaodancante.gif"); 
         Icon umjogador = new ImageIcon("1jogador.png");
         Icon doisjogadores = new ImageIcon("2jogadores.png");
         JLabel feijaod = new JLabel(feijaodance);
+        JLabel feijaod2 = new JLabel(feijaodance);
         JLabel kalah1 = new JLabel(icones.kalahs[0]);
         JLabel kalah2 = new JLabel(icones.kalahs[0]);
 
-        JButton botaoniveis[] = new JButton[3];//botões para o nível
-        JButton botaoplayer[] = new JButton[2];//botao pra selecionar  2 jogadores ou contra o computador
-        //inicializa os botões das casinhas do jogador 2
+        //botões para o nível
+        JButton botaoniveis[] = new JButton[3];
+        //botão pra selecionar  2 jogadores ou contra o computador
+        JButton botaoplayer[] = new JButton[2];
 
+        //Adiciona no painel os botões de níveis e de selecionar número de jogadores
+        //e define os action listeners
         for (i = 0; i < 3; i++) {
             botaoniveis[i] = new JButton(icones.iconeniveis[i]);
             panel.add(botaoniveis[i]);
@@ -94,6 +116,8 @@ public class Interface extends JFrame {
 
                 botaoplayer[i].addActionListener(event -> {
                     decidirjogadores(nivel);
+                    
+                    tabuleiro.turno=1;
 
                 });
 
@@ -104,14 +128,10 @@ public class Interface extends JFrame {
                 decidirnivel(nivel);
 
             });
-
             botaoniveis[i].setBounds(((5 - i) * 150), 550, 110, 110);
-
-            // botaon[i].setText(Integer.toString(tabuleiro.j2[i].nFeijoes));
-
         }
 
-
+        //Define os botões do lado do jogador 2, seus ícones, seus action listeners
         for (i = 0; i < 6; i++) {
             if (i == 2 || i == 3) botaoj2[i] = new JButton(icones.casinhas[4]);
             else botaoj2[i] = new JButton(icones.casinhas[3]);
@@ -129,7 +149,7 @@ public class Interface extends JFrame {
 
                     for (int k = 0; k < 6; k++) {
                         int indicecasinha = tabuleiro.j1[k].nFeijoes;
-                        //verifica o numero de feijoes da casinha e define os ícones
+                        //verifica o número de feijoes da casinha e define os ícones
                         botaoj1[k].setIcon(icones.casinhas[indicecasinha > 4 ? 5 : indicecasinha]);
                         indicecasinha = tabuleiro.j2[k].nFeijoes;
                         botaoj2[k].setIcon(icones.casinhas[indicecasinha > 4 ? 5 : indicecasinha]);
@@ -141,12 +161,14 @@ public class Interface extends JFrame {
                 }
                 if (!tabuleiro.temFeijoes() || tabuleiro.limiteKalah()) {
                     panel.add(feijaod);
+                    panel.add(feijaod2);
                     //verifica qual kalah tem mais feijões para definir o vencedor
                     int Vencedor = tabuleiro.k1.nFeijoes < tabuleiro.k2.nFeijoes ? 2 : 1;
                     JOptionPane.showMessageDialog(null, "O jogador "+ Vencedor + " venceu!!",
-                            "Parabens!", JOptionPane.PLAIN_MESSAGE);
+                            "Parabéns!", JOptionPane.PLAIN_MESSAGE);
                     querJogarNovamente(botaoj1, botaoj2, kalah1, kalah2);
                     panel.remove(feijaod);
+                    panel.remove(feijaod2);
                 }
             });
             botaoj2[i].setBounds(((5 - i) * 150) + 200, 50, 150, 150);
@@ -154,18 +176,13 @@ public class Interface extends JFrame {
             botaoj2[i].setText(Integer.toString(tabuleiro.j2[i].nFeijoes));
 
         }
-        //inicializa os botões das casinhas do jogador 1
-
+        //Define os botões do lado do jogador 1, seus ícones, seu action listeners
         for (i = 0; i < 6; i++) {
             if (i == 2 || i == 3) botaoj1[i] = new JButton(icones.casinhas[4]);
             else botaoj1[i] = new JButton(icones.casinhas[3]);
             panel.add(botaoj1[i]);
-            final int j = i;
-            final int aux = 1;
-            //final int aux2 = casinha;
-            //final int casinha;
-
-
+            final int j = i; 
+ 
             botaoj1[i].addActionListener(event -> {
 
                 if (tabuleiro.temFeijoes() && !tabuleiro.limiteKalah()) {
@@ -176,7 +193,7 @@ public class Interface extends JFrame {
 
                     for (int k = 0; k < 6; k++) {
                         int indicecasinha = tabuleiro.j1[k].nFeijoes;
-                        //verifica o numero de feijoes da casinha e define os ícones
+                        //verifica o número de feijões da casinha e define os ícones
                         botaoj1[k].setIcon(icones.casinhas[indicecasinha > 4 ? 5 : indicecasinha]);
                         indicecasinha = tabuleiro.j2[k].nFeijoes;
                         botaoj2[k].setIcon(icones.casinhas[indicecasinha > 4 ? 5 : indicecasinha]);
@@ -185,23 +202,22 @@ public class Interface extends JFrame {
                     int indicekalah = tabuleiro.k1.nFeijoes;
                     kalah1.setIcon(icones.kalahs[indicekalah > 4 ? 5 : indicekalah]);
 
+                    //Define as jogadas da IA caso o jogador tenha feito essa opção
                     while (tabuleiro.turno == 2 && Comp == 1) {
 
                         int casinha = -1;
 
                         if (nivel == 3) casinha = IA.escolheCasinhaN3(tabuleiro);
                         else if (nivel == 2) casinha = IA.escolheCasinhaN2(tabuleiro);
-                        else casinha = IA.escolheCasinhaN1(tabuleiro);
-                        //System.out.println("entrein " + casinha);
+                        else casinha = IA.escolheCasinhaN1(tabuleiro); 
 
                         tabuleiro.jogada(2, tabuleiro.j2, tabuleiro.k2, tabuleiro.j1, casinha, 1, nivel, IA, tabuleiro);
-                        //atualizado = 0;
-                        //System.out.println("sei lah neh");
+ 
                         atualiza(botaoj1, botaoj2, kalah1, kalah2);
 
                         for (int k = 0; k < 6; k++) {
                             int indicecasinha = tabuleiro.j1[k].nFeijoes;
-                            //verifica o numero de feijoes da casinha e define os ícones
+                            //verifica o número de feijões da casinha e define os ícones
                             botaoj1[k].setIcon(icones.casinhas[indicecasinha > 4 ? 5 : indicecasinha]);
                             indicecasinha = tabuleiro.j2[k].nFeijoes;
                             botaoj2[k].setIcon(icones.casinhas[indicecasinha > 4 ? 5 : indicecasinha]);
@@ -213,32 +229,43 @@ public class Interface extends JFrame {
                     }
 
                 }
+                //Verifica o fim do jogo
                 if (!tabuleiro.temFeijoes() || tabuleiro.limiteKalah()) {
                     panel.add(feijaod);
+                    panel.add(feijaod2);
                     //verifica qual kalah tem mais feijões para definir o vencedor
                     int Vencedor = tabuleiro.k1.nFeijoes < tabuleiro.k2.nFeijoes ? 2 : 1;
                     JOptionPane.showMessageDialog(null, "O jogador "+ Vencedor + " venceu!!",
-                            "Parabens!", JOptionPane.PLAIN_MESSAGE);
+                            "Parabéns!", JOptionPane.PLAIN_MESSAGE);
                     querJogarNovamente(botaoj1, botaoj2, kalah1, kalah2);
                     panel.remove(feijaod);
+                    panel.remove(feijaod2);
                 }
 
             });
+            //define os tramanhos dos botões do jogador 1 e seus textos
             botaoj1[i].setBounds((i * 150) + 200, 250, 150, 150);
             botaoj1[i].setText(Integer.toString(tabuleiro.j1[i].nFeijoes));
 
         }
+
+        //adiciona as labels de kalah e o texto com o número de feijões no painel
         panel.add(kalah1);
         kalah1.setText(Integer.toString(k1.nFeijoes));
         panel.add(kalah2);
         kalah2.setText(Integer.toString(k2.nFeijoes));
 
+        //define seus tamanhos
         kalah1.setBounds(1125, 115, 150, 200);
         kalah2.setBounds(25, 115, 150, 200);
 
-        feijaod.setBounds(100, 260, 500, 500);
+        //adiciona um gif de feijão dançante quando o jogo acaba
+        feijaod.setBounds(10, 260, 500, 500);
+        feijaod2.setBounds(800,270,500,500);
 
+        //define o tamanho inicial da janela
         this.setSize(1300, 720);
+        //deixa a frame visível
         this.setVisible(true);
         this.getContentPane().add(panel);
     }

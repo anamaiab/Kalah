@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 /**
- * Created by caroles on 30/05/2017.
+ * Created by Ana Maia, Beatriz Monteiro, carolesj, Giovana Craveiro on 30/05/2017.
+ * Possui o número de feijões
  */
 public class Kalah {
     public int nFeijoes;
